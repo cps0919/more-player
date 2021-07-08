@@ -88,13 +88,13 @@ body,
 
 ```
 ### 参数
- #### 属性
+  #### 属性
     -data：视频流地址(src)，以及设备信息
     -backgroundColor：背景色
     -borderColor：边框颜色
     -textCorlor：字体颜色
     -activeColor：当前激活窗口颜色
- #### 方法
+  #### 方法
     -videoClick(e)：返回当前选中视频的设备信息
         -参数e：active,当前激活窗口；num：当前宫格数；info：当前设备信息
 
