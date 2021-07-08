@@ -5,3 +5,4 @@ declare module '*.vue' {
   export default component
 }
 declare module '@easydarwin/easywasmplayer'
+declare module 'more-player'

@@ -1,16 +1,17 @@
 {
-  "name": "more-player",
+  "name": "more--video-player",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name more-player --dest lib src/index.js"
+    "lib": "vue-cli-service build --target lib --name more-player --dest lib src/index.ts"
   },
   "dependencies": {
     "@easydarwin/easywasmplayer": "^4.0.13",
     "core-js": "^3.6.5",
+    "more-player": "^1.0.2",
     "vue": "^3.0.0"
   },
   "devDependencies": {

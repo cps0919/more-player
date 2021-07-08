@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import MorePlayer from 'more-player'
+import 'more-player/more-player.css'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(MorePlayer)
+app.mount('#app')
