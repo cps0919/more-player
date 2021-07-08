@@ -57,7 +57,7 @@ body,
 #app {
   height: 100%;
   width: 100%;
-  background: #2c3e50;
+  background: url('./assets/bg.110420cf.png');
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
