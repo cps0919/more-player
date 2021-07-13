@@ -18,10 +18,11 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
+// import MorePlayer from "@/components/more-player.vue";
 
 export default defineComponent({
   name: "App",
-  components: {},
+  // components: { MorePlayer },
   setup() {
     let state = reactive({
       videoData: {

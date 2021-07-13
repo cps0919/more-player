@@ -41,13 +41,10 @@ app.mount('#app')
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-import MorePlayer from "@/components/more-player.vue";
 
 export default defineComponent({
   name: "App",
-  components: {
-    MorePlayer,
-  },
+  components: {},
   setup() {
     let state = reactive({
       videoData: {
@@ -80,7 +77,7 @@ body,
 #app {
   height: 100%;
   width: 100%;
-  background: #2c3e50;
+  background: url("./assets/bg.110420cf.png");
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -92,6 +89,7 @@ body,
   box-sizing: border-box;
 }
 </style>
+
 
 ```
 ### 参数

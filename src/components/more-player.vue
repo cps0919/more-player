@@ -9,7 +9,9 @@
         @click="modelClick(acModel.num, index)"
       >
         <!-- <LivePlayer :src="equipmentArr[0]['src']"></LivePlayer> -->
-        <div :id="`videoElement${index}`"></div>
+        <div class="video-main" :style="[mianFun()]">
+          <div :id="`videoElement${index}`"></div>
+        </div>
       </div>
     </div>
     <div class="option" ref="option">
@@ -21,7 +23,7 @@
         :style="acIconClor(item)"
         @click="iconClick(item)"
       >
-        <slot :name="`option${item.num}`">{{ item.name }}</slot>
+        <slot :name="`num${item.num}`">{{ item.name }}</slot>
       </span>
     </div>
   </div>
@@ -53,7 +55,6 @@ interface StateProps {
   kbs: number;
 }
 export default defineComponent({
-  name: "MorePlayer",
   props: {
     backgroundColor: {
       type: String,
@@ -78,7 +79,6 @@ export default defineComponent({
         src: "",
         info: null,
       }),
-      required: true,
     },
     //窗口个数
     model: {
@@ -86,7 +86,7 @@ export default defineComponent({
       default: 4,
     },
   },
-  setup(props, { emit }) {
+  setup(props) {
     const state = reactive<StateProps>({
       options: [
         {
@@ -169,7 +169,7 @@ export default defineComponent({
                 Height: true,
                 logo: false,
                 closeAudio: true,
-                live: true,
+                // live: true,
                 cfKbs: (e: any) => {
                   //码流返回5次都为零，播放失败
                   state.kbs = state.kbs + 1;
@@ -234,7 +234,6 @@ export default defineComponent({
       state.acModel.num = num;
       state.acModel.active = index;
       state.acModel.info = state.equipmentArr[index];
-      emit("videoClick", state.acModel);
     };
     //多频样式
     const modelFun = (num: number) => {
@@ -243,7 +242,7 @@ export default defineComponent({
         obj = {
           flex: "0 0 100%",
           height: "100%",
-          boxShadow: `inset 0px 0px 0px 1px ${props.activeColor}`,
+          // boxShadow: `inset 0px 0px 0px 5px ${props.activeColor}`,
         };
       else if (num == 4)
         obj = {
@@ -267,12 +266,17 @@ export default defineComponent({
         borderBottom: `1px solid ${props.borderColor}`,
       };
     };
+    const mianFun = () => {
+      return {
+        border: `1px solid ${props.borderColor}`,
+      };
+    };
     //多频激活样式
     const acModelFUc = (ac: number) => {
       if (ac == state.acModel.active) {
         console.log(ac == state.acModel.active);
         return {
-          boxShadow: `inset 0px 0px 0px 1px ${props.activeColor}`,
+          boxShadow: `inset 0px 0px 0px 2px ${props.activeColor}`,
           // border: `1px solid ${props.activeColor}`,
         };
       }
@@ -362,6 +366,7 @@ export default defineComponent({
       modelClick,
       acModelFUc,
       capture,
+      mianFun,
     };
   },
 });
@@ -381,7 +386,22 @@ export default defineComponent({
 .video-item {
   box-sizing: border-box;
   background: black;
-  padding: 1px;
+  padding: 2px;
+  overflow: hidden;
+}
+.video-main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.player-box {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .option {

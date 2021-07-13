@@ -1,6 +1,6 @@
 {
   "name": "more-player",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于vue3.x多屏播放插件",
   "main": "more-player.umd.js",
   "repository":{
