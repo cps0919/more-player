@@ -11,7 +11,7 @@
   "dependencies": {
     "@easydarwin/easywasmplayer": "^4.0.13",
     "core-js": "^3.6.5",
-    "more-player": "^2.0.0",
+    "more-player": "^2.0.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {

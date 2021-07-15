@@ -1,6 +1,6 @@
 {
   "name": "more-player",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "基于@easydarwin/easywasmplayer、vue3.x、typescript封装的多屏播放组件",
   "main": "more-player.umd.js",
   "scripts": {
