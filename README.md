@@ -23,7 +23,8 @@ app.mount('#app')
 ```javascript
 <template>
   <MorePlayer
-    :data="videoData"
+    :src="src"
+    :equipment="equipment"
     :backgroundColor="backgroundColor"
     :borderColor="borderColor"
     :activeColor="activeColor"
@@ -41,16 +42,15 @@ app.mount('#app')
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
+// import MorePlayer from "@/components/more-player.vue";
 
 export default defineComponent({
   name: "App",
-  components: {},
+  // components: { MorePlayer },
   setup() {
     let state = reactive({
-      videoData: {
-        src: "ws://10.0.60.168:80/rtp/00000001.flv", //播放地址
-        info: null, //设备信息
-      },
+      src: "ws://10.0.60.168:80/rtp/00000001.flv",
+      equipment: null, //设备信息
       backgroundColor: "transparent",
       borderColor: "rgba(69, 162, 255, 0.8)",
       activeColor: "#ffe100",
@@ -91,10 +91,12 @@ body,
 </style>
 
 
+
 ```
 ### 参数
   #### 1.属性
-    -data：视频流地址(src)，以及设备信息
+    -src：视频流地址
+    -equipment：设备信息
     -backgroundColor：背景色
     -borderColor：边框颜色
     -textCorlor：字体颜色

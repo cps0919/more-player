@@ -1,6 +1,7 @@
 <template>
   <MorePlayer
-    :data="videoData"
+    :src="src"
+    :equipment="equipment"
     :backgroundColor="backgroundColor"
     :borderColor="borderColor"
     :activeColor="activeColor"
@@ -25,10 +26,8 @@ export default defineComponent({
   // components: { MorePlayer },
   setup() {
     let state = reactive({
-      videoData: {
-        src: "ws://10.0.60.168:80/rtp/00000001.flv", //播放地址
-        info: null, //设备信息
-      },
+      src: "ws://10.0.60.168:80/rtp/00000001.flv",
+      equipment: null, //设备信息
       backgroundColor: "transparent",
       borderColor: "rgba(69, 162, 255, 0.8)",
       activeColor: "#ffe100",

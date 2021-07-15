@@ -5,11 +5,14 @@
         class="video-item"
         v-for="(item, index) in acModel.num"
         :key="index"
-        :style="[modelFun(acModel.num), acModelFUc(index)]"
-        @click="modelClick(acModel.num, index)"
+        :style="[modelFun(acModel.num)]"
       >
         <!-- <LivePlayer :src="equipmentArr[0]['src']"></LivePlayer> -->
-        <div class="video-main" :style="[mianFun()]">
+        <div
+          class="video-main"
+          @click="modelClick(acModel.num, index)"
+          :style="[mianFun(), acModelFUc(index)]"
+        >
           <div :id="`videoElement${index}`"></div>
         </div>
       </div>
@@ -35,18 +38,12 @@ import {
   ref,
   reactive,
   toRefs,
-  PropType,
   watch,
   nextTick,
   onBeforeUnmount,
 } from "vue";
 import WasmPlayer from "@easydarwin/easywasmplayer";
 // import LivePlayer from '@liveqing/liveplayer'
-interface DataProps {
-  src: string; //播放地址
-  info: any; //设备信息
-  [name: string]: any;
-}
 interface StateProps {
   options: Array<{ icon: string; name: string; num: number }>;
   acModel: { num: number; active: number; info: any };
@@ -73,12 +70,14 @@ export default defineComponent({
       default: "#ffe100",
     },
     //摄像机以及流信息
-    data: {
-      type: Object as PropType<DataProps>,
-      default: () => ({
-        src: "",
-        info: null,
-      }),
+    src: {
+      type: String,
+      default: "",
+      requred: true,
+    },
+    equipment: {
+      type: Object,
+      default: () => null,
     },
     //窗口个数
     model: {
@@ -86,7 +85,7 @@ export default defineComponent({
       default: 4,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const state = reactive<StateProps>({
       options: [
         {
@@ -153,37 +152,34 @@ export default defineComponent({
     };
 
     //生成video对象
-    const createPlayer = (acIndex: number, data: DataProps) => {
-      console.log("createPlayer", data);
-      let { src, info } = data;
+    const createPlayer = (acIndex: number, src: string, info: any) => {
       state.equipmentArr[acIndex] = info;
-      if (!state.videoArr[acIndex])
-        //异步执行渲染有问题，加了定时器(具体原因还没分析清楚)
-        setTimeout(() => {
-          nextTick(() => {
-            (state.videoArr[acIndex] = new WasmPlayer(
-              null,
-              `videoElement${acIndex}`,
-              callbackfun,
-              {
-                Height: true,
-                logo: false,
-                closeAudio: true,
-                // live: true,
-                cfKbs: (e: any) => {
-                  //码流返回5次都为零，播放失败
-                  state.kbs = state.kbs + 1;
-                  if (state.kbs > 4) {
-                    cfKbs(e, acIndex);
-                    state.kbs = 0;
-                  }
-                },
-              }
-            )),
-              state.videoArr[acIndex].play(src, 1);
-          });
-        }, 500);
-      else state.videoArr[acIndex].play(src, 1);
+      destoryPlayer(state.acModel.active);
+      //异步执行渲染有问题，加了定时器(具体原因还没分析清楚)
+      setTimeout(() => {
+        nextTick(() => {
+          state.videoArr[acIndex] = new WasmPlayer(
+            null,
+            `videoElement${acIndex}`,
+            callbackfun,
+            {
+              Height: true,
+              logo: false,
+              closeAudio: true,
+              live: true,
+              cfKbs: (e: any) => {
+                //码流返回5次都为零，播放失败
+                state.kbs = state.kbs + 1;
+                if (state.kbs > 4) {
+                  cfKbs(e, acIndex);
+                  state.kbs = 0;
+                }
+              },
+            }
+          );
+          state.videoArr[acIndex].play(src, 1);
+        });
+      }, 500);
     };
     //销毁video对象
     const destoryPlayer = (acIndex: number) => {
@@ -194,7 +190,7 @@ export default defineComponent({
           state.videoArr[acIndex] = null;
           state.equipmentArr[acIndex] = null;
         } catch (error) {
-          console.log(error);
+          console.log("销毁视频");
         }
       }
     };
@@ -221,7 +217,7 @@ export default defineComponent({
       }
     };
     const callbackfun = (e: any) => {
-      console.log(e);
+      console.log("监听", e);
     };
     //video-icon样式
     const acIconClor = (data: any) => {
@@ -233,7 +229,10 @@ export default defineComponent({
     const modelClick = (num: any, index: number) => {
       state.acModel.num = num;
       state.acModel.active = index;
-      state.acModel.info = state.equipmentArr[index];
+      state.acModel.info = state.equipmentArr[index]
+        ? Object.assign({}, state.equipmentArr[index])
+        : null;
+      emit("videoClick", state.acModel);
     };
     //多频样式
     const modelFun = (num: number) => {
@@ -274,35 +273,36 @@ export default defineComponent({
     //多频激活样式
     const acModelFUc = (ac: number) => {
       if (ac == state.acModel.active) {
-        console.log(ac == state.acModel.active);
         return {
-          boxShadow: `inset 0px 0px 0px 2px ${props.activeColor}`,
+          boxShadow: `0 0 2px 3px  ${props.activeColor}`,
           // border: `1px solid ${props.activeColor}`,
         };
       }
     };
     //src监听
     watch(
-      () => props.data,
+      () => props.src,
       (newVal) => {
-        if (newVal.src != "") {
-          createPlayer(state.acModel.active, newVal);
+        if (newVal != "") {
+          createPlayer(state.acModel.active, newVal, props.equipment);
           if (state.acModel.num == 4) {
             if (state.acModel.active < 3) {
               state.acModel.active = state.acModel.active + 1;
+            } else {
+              state.acModel.active = 0;
             }
           } else if (state.acModel.num == 9) {
             if (state.acModel.active < 8) {
               state.acModel.active = state.acModel.active + 1;
-            }
+            } else state.acModel.active = 0;
           } else if (state.acModel.num == 16) {
             if (state.acModel.active < 15) {
               state.acModel.active = state.acModel.active + 1;
-            }
+            } else state.acModel.active = 0;
           }
         }
       },
-      { immediate: true }
+      { deep: true, immediate: true }
     );
     //画面截取
     const capture = (acIndex: number) => {
@@ -311,8 +311,6 @@ export default defineComponent({
       if (!el) {
         el = document.createElement("video");
       }
-      console.log(getTime());
-
       var canvas: any = document.createElement("canvas"); //创建一个canvas
       canvas.width = 1920; //设置canvas的宽度为视频的宽度
       canvas.height = 1080; //设置canvas的高度为视频的高度
@@ -419,6 +417,7 @@ export default defineComponent({
   margin-left: 10px;
   cursor: pointer;
 }
+
 /* .player-box {
   position: relative;
   height: calc(100% - 2px);
