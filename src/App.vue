@@ -1,5 +1,5 @@
 <template>
-  <MorePlayer
+  <more-player
     :src="src"
     :equipment="equipment"
     :backgroundColor="backgroundColor"
@@ -14,16 +14,14 @@
     <template #option4>四宫格icon </template>
     <template #option9>九宫格icon </template>
     <template #option16>十六宫格icon </template> -->
-  </MorePlayer>
+  </more-player>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-// import MorePlayer from "@/components/more-player.vue";
 
 export default defineComponent({
   name: "App",
-  // components: { MorePlayer },
   setup() {
     let state = reactive({
       src: "ws://10.0.60.168:80/rtp/00000001.flv",

@@ -1,0 +1,19 @@
+{
+  "name": "more-player",
+  "version": "2.0.0",
+  "description": "基于@easydarwin/easywasmplayer、vue3.x、typescript封装的多屏播放组件",
+  "main": "more-player.umd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cps0919/more-player.git"
+  },
+  "author": "cps0919",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cps0919/more-player/issues"
+  },
+  "homepage": "https://github.com/cps0919/more-player#readme"
+}

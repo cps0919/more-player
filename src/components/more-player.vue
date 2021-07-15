@@ -52,6 +52,7 @@ interface StateProps {
   kbs: number;
 }
 export default defineComponent({
+  name: "more-player",
   props: {
     backgroundColor: {
       type: String,
